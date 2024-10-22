@@ -9,7 +9,8 @@ variables:
 
 stages:
 - stage: Build_Stage
-  displayName: 
+  displayName: Build_Stage
+  
   jobs:
   - job: BuildNuget
     displayName: Build Nuget packages
@@ -40,11 +41,9 @@ stages:
         packagesToPack: '**/*.csproj'
         versioningScheme: 'byEnvVar'
         versionEnvVar: 'version'
-
     - task: DotNetCoreCLI@2
-      displayName: Push Nuget Package
       inputs:
         command: 'push'
         packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
         nuGetFeedType: 'internal'
-        publishVstsFeed: 'a02513cd-1272-4398-8fd8-5a1473eab7c5/00c683e5-28b9-42ad-a0cf-f0b29cc0b365'
+        publishVstsFeed: '2c1c8360-5dc0-4abf-84f5-33b1851b9f69/f0a09130-bab4-409d-bc2d-4b9b536f2459'
