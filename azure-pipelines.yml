@@ -47,11 +47,11 @@ stages:
         includeSource: true    # Optional: Include source code
 
   
-    - task: DotNetCoreCLI@2
-
+    - task: NuGetAuthenticate@1
+    - task: NuGetCommand@2
       inputs:
         command: 'push'
         packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: '2c1c8360-5dc0-4abf-84f5-33b1851b9f69/f0a09130-bab4-409d-bc2d-4b9b536f2459'
-        arguments: '--skip-duplicate'
+        allowPackageConflicts: true
