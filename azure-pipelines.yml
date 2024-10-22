@@ -9,11 +9,11 @@ variables:
 
 stages:
 - stage: Build_Stage
-  displayName: Build_Stage
+  displayName: Build Stage
   
   jobs:
   - job: BuildNuget
-    displayName: Build Nuget packages
+    displayName: Build NuGet Packages
     variables:
       BuildConfiguration: release
     steps:
@@ -35,15 +35,19 @@ stages:
     - script: printenv
 
     - task: DotNetCoreCLI@2
-      displayName: Pack Nuget Package
+      displayName: Pack NuGet Package
       inputs:
         command: 'pack'
         packagesToPack: '**/*.csproj'
         versioningScheme: 'byEnvVar'
         versionEnvVar: 'version'
+        includeSymbols: true  # Optional: Include symbols for debugging
+        includeSource: true    # Optional: Include source code
+
     - task: DotNetCoreCLI@2
       inputs:
         command: 'push'
         packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: '2c1c8360-5dc0-4abf-84f5-33b1851b9f69/f0a09130-bab4-409d-bc2d-4b9b536f2459'
+
