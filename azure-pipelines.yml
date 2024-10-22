@@ -5,7 +5,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  version: 1.0.2-$(Build.BuildId)
+  # Define the base version here, you can change it manually as needed
+  baseVersion: '1.0.2'
+  version: '$(baseVersion)-$(Build.BuildId)'  # Combine base version with build ID for unique versioning
 
 stages:
 - stage: Build_Stage
@@ -40,14 +42,16 @@ stages:
         command: 'pack'
         packagesToPack: '**/*.csproj'
         versioningScheme: 'byEnvVar'
-        versionEnvVar: 'version'
+        versionEnvVar: 'version'  # Use the version variable defined above
         includeSymbols: true  # Optional: Include symbols for debugging
         includeSource: true    # Optional: Include source code
 
     - task: DotNetCoreCLI@2
+
       inputs:
         command: 'push'
         packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: '2c1c8360-5dc0-4abf-84f5-33b1851b9f69/f0a09130-bab4-409d-bc2d-4b9b536f2459'
         arguments: '--skip-duplicate'
+
